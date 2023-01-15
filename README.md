@@ -1,0 +1,2 @@
+# dhip
+A hugo theme
