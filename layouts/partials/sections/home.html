@@ -1,0 +1,120 @@
+{{ $backgroundImage := site.Params.background.default }}
+{{ $bgsrc := resources.Get $backgroundImage }}
+{{ $authpp := site.Params.author.profilepicture }}
+{{ $ppsrc := resources.Get $authpp }}
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<div id="home" class="container-fluid g-0 home">
+  <div id="homeBg" class="background container-fluid">
+  </div>
+  <div id="holder" class="holder">
+    <img class="pp" src={{ $ppsrc.RelPermalink }}/>
+    <div id="typing-holder" class="typing-holder">
+      <span class="dollar">$ </span>
+      <div id="typed-strings">
+        {{ range site.Params.author.description }}
+        <p>{{ . }}</p>
+        {{ end }}
+      </div>
+      <span id="typed"></span>
+      <span class="shell_cursor"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .home{
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+  }
+  .background{
+    position: relative;
+    left: 0;
+    background-image: url('{{ $bgsrc.RelPermalink }}');
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-attachment: fixed;
+    background-position: center;
+    transform: scale(1,1);
+    background-size: cover;
+  }
+  .pp{
+    height: 150px;
+    width: 150px;
+  }
+  .holder{
+    position: relative;
+    top: -68%;
+    left: 46%;
+  }
+  .typing-holder{
+    padding-top: 1rem;
+    text-align: center;
+    position: relative;
+    left: -46%;
+  }
+
+</style>
+<script>
+  var typed = new Typed('#typed', {
+    stringsElement: '#typed-strings',
+    typeSpeed: 30,
+    backSpeed: 30,
+    smartBackspace: true,
+    loop: true,
+    loopCount: Infinity,
+    showCursor: false,
+  });
+</script>
+<script type="text/javascript">
+  let thresholdSets = [];
+  for (let i=0; i<=1.0; i+= 0.01) {
+    thresholdSets.push(i);
+  }
+  var observer = new IntersectionObserver(function(entries) {
+    if(entries[0].isIntersecting === true)
+      var ratio = (1 - entries[0].intersectionRatio) * 100;
+      if (ratio >= 3 && ratio <= 50){
+        document.getElementById("home").style.width = (100 - ratio) + "vw";
+        document.getElementById("homeBg").style.left = ratio*0.68 + "%";
+        document.getElementById("holder").style.left = (46 + ratio*0.59) + "%";
+        document.getElementById("typing-holder").style.left = "-" + (46 - ratio*0.08) + "%";
+      }
+      else if (ratio < 20){
+        document.getElementById("home").style.width = 100 + "vw";
+        document.getElementById("homeBg").style.left = 0 + "%";
+        document.getElementById("holder").style.left = 46 + "%";
+        document.getElementById("typing-holder").style.left = "-" + 46 + "%";
+      }
+      else if (ratio > 75){
+        observer = null;
+        animate();
+      }
+  }, { threshold: thresholdSets });
+
+  function animate(){
+    document.querySelector('#navbar-home').classList.add('animate__animated', 'animate__fadeOutLeft');
+    document.querySelector('#home').classList.add('animate__animated', 'animate__bounceOutLeft');
+    setTimeout(() => {swapHome()},300);
+    document.querySelector('#navbar').classList.remove('navbar-hide');
+    document.querySelector('#navbar').classList.add('animate__animated', 'animate__fadeInRight');
+    document.querySelector('#top-navbar').classList.add('animate__animated', 'animate__fadeInRight', 'navbar-background');
+  }
+
+  function swapHome(){
+    document.querySelector('#outer-wrapper').classList.replace('outer-wrapper-home', 'outer-wrapper');
+    document.querySelector('#wrapper').classList.replace('wrapper-home', 'wrapper');
+    document.querySelector('#sections').classList.replace('sections-home', 'sections');
+    document.getElementById("home").style.display = "none";
+    document.querySelector('#navbar-home').classList.add('navbar-hide');
+  }
+
+  observer.observe(document.querySelector("#home"));
+</script>

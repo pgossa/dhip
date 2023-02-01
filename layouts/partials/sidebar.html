@@ -1,0 +1,142 @@
+{{ $backgroundImage := site.Params.background.sidebar }}
+{{ $src := resources.Get $backgroundImage }}
+{{ $authpp := site.Params.author.profilepicture }}
+{{ $ppsrc := resources.Get $authpp }} 
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<div id="sidebar" class="sidebar sidebar-not-pushed">
+  <div id="sidebar-background" class="sidebar-background">
+    <div class="sidebar-holder">
+      <img class="pp-sidebar" src={{ $ppsrc.RelPermalink }}/>
+      <div class="links-holder row">
+        <div class="siteLinks col">
+          {{ range .Site.Menus.main }}
+            <a class="nav-link sidebar-nav-link" href="{{ .URL }}">
+            {{ if .Pre }}
+              {{ partial "fontawesome.html" (dict "name" .Pre "size" "1.5") }}
+            {{ end }}
+            {{ $text := print .Name | safeHTML }}
+            {{ $text }}
+            </a>
+          {{ end }}
+        </div>
+        <div class="profileLinks col">
+            {{ range $key, $value := site.Params.author.social }}
+              {{ if $value }}
+                {{ if eq $key "mail" }} {{ $key = "envelope" }} {{ $value = $value | printf "%s%s" "mailto:" }} {{ end }}
+                  <a class="icon row social-icon" href="{{ $value }}">{{ partial "fontawesome.html" (dict "name" $key "size" "3") }}</a>
+                {{ end }}
+            {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sidebar{
+    width: 25vw;
+    height: calc(100% - 3em);
+    position: fixed;
+    top: 3em;
+    left: -25vw;
+    z-index: 99999;
+  }
+  .sidebar-background{
+    height: 100%;
+    width: 100%;
+    background-image: url('{{ $src.RelPermalink }}');
+    background-attachment: fixed;
+    background-position: center;
+    transform: scale(1,1);
+    background-size: cover;
+    left: -50%;
+  }
+
+  .close{
+    cursor: pointer;
+    float: right;
+    padding-right: 20px;
+    padding-top: 5px;
+  }
+
+  .pp-sidebar{
+    margin: 8em 10em;
+    height: 150px;
+    width: 150px;
+  }
+
+  .sidebar-holder{
+    height: 100%;
+    width: 100%;
+  }
+
+  .typing-holder{
+    padding-top: 1rem;
+    text-align: center;
+    position: relative;
+    left: -46%;
+  }
+
+  .link-holder{
+    margin: 0em 1em 0em 1em;
+    height: 100%;
+  }
+
+  .icon{
+    height: 1em;
+    width: 1em;
+  }
+
+  .sidebar-nav-link{
+    margin: 0em 1em 0em 1em;
+  }
+
+  .social-icon{
+    height: 3em;
+    width: 3em;
+  }
+
+  .sidebar-pushed{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    transform: translate3d(25vw, 0, 0);
+    margin-left: -1px;
+  }
+  .sidebar-not-pushed{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .element-pushed{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    transform: translate3d(25vw, 0, 0);
+    padding-right: 25vw;
+  }
+  .element-not-pushed{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    transform: translate3d(0, 0, 0);
+  }
+
+  body{
+    overflow-x: hidden;
+  }
+
+</style>
+<script>
+  var typed = new Typed('#typed', {
+    stringsElement: '#typed-strings',
+    typeSpeed: 30,
+    backSpeed: 30,
+    smartBackspace: true,
+    loop: true,
+    loopCount: Infinity,
+    showCursor: false,
+  });
+</script>

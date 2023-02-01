@@ -1,0 +1,10 @@
+<span
+  class="fontawesome-inline-svg"
+  style="display:inline-block;position:relative;padding: inherit; width: {{ .size }}rem;">
+  {{- $fname:=print "themes/dhip/fontawesome/" .name ".svg" -}}
+  {{- $svg := readFile $fname -}}
+  {{- $commentStrippedSvg := replaceRE "<!--[^>]*-->" "" $svg -}}
+  <!-- {{$commentStrippedSvg}} -->
+  {{- $filledPathSvg := replace $commentStrippedSvg "<path" "<path fill='currentColor'" -}}
+  {{ $filledPathSvg | safeHTML }}
+</span>

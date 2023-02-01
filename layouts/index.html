@@ -1,0 +1,39 @@
+{{ define "main" }}
+  <div id="main" class="element-not-pushed">
+    <div id="outer-wrapper" class="outer-wrapper-home">
+      <div id="wrapper" class="wrapper-home">
+        {{- partial "sections/home.html" . -}}
+        {{- partial "sections/sections.html" . -}}
+      </div>
+    </div>
+  </div>
+  <style>
+    .wrapper-home {
+      display: flex;
+      flex-direction: row;
+      width: 200vw;
+      transform: rotate(90deg) translateY(-100vh);
+      transform-origin: top left;
+    }
+    .outer-wrapper-home{
+      width: 100vh;
+      height: 100vw;
+      transform: rotate(-90deg) translateX(-100vh);
+      transform-origin: top left;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: absolute;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .wrapper{
+    }
+    .outer-wrapper{
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar{
+      display: none;
+    }
+  </style>
+{{ end }}
